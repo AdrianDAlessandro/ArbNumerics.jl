@@ -42,6 +42,11 @@ end
     This is computed as if calling arb_rel_error_bits() on the real ball
     whose midpoint is the larger out of the real and imaginary midpoints of x,
     and whose radius is the larger out of the real and imaginary radiuses of x.
+
+    slong arb_rel_error_bits(const arb_t x)
+      Returns the effective relative error of x measured in bits, 
+        defined as the difference between the position of the top bit in the radius and the top bit in the midpoint, plus one. 
+        The result is clamped between plus/minus ARF_PREC_EXACT.
 =#
 
 relerror_bits(x::ArbFloat{P}) where {P} = 0
@@ -60,6 +65,21 @@ end
     rel_accuracy_bits
     Returns the effective relative accuracy intrinsic to a ball, measured in bits.
     This is equal to -relerror_bits.
+
+    slong arb_rel_error_bits(const arb_t x)
+    Returns the effective relative error of x measured in bits, 
+      defined as the difference between the position of the top bit in the radius and the top bit in the midpoint, plus one.
+      The result is clamped between plus/minus ARF_PREC_EXACT.
+
+    slong arb_rel_accuracy_bits(const arb_t x)
+      Returns the effective relative accuracy of x measured in bits, equal to the negative of the return value from arb_rel_error_bits().
+
+    slong arb_rel_one_accuracy_bits(const arb_t x)
+      Given a ball with midpoint m and radius r, returns an approximation of the relative accuracy of [max(1,|m|)±r] measured in bits.
+
+    slong arb_bits(const arb_t x)
+      Returns the number of bits needed to represent the absolute value of the mantissa of the midpoint of x, 
+        i.e. the minimum precision sufficient to represent x exactly. Returns 0 if the midpoint of x is a special value.
 =#
 
 
@@ -80,6 +100,12 @@ end
     Rounds the significand of a value to the number of bits
     equal to the accuracy of x (as indicated by its radius),
     plus a few guard bits so enclosure is maintained.
+
+    void arb_trim(arb_t y, const arb_t x)
+       Sets y to a trimmed copy of x:
+         rounds x to a number of bits equal to the accuracy of x (as indicated by its radius),
+         plus a few guard bits. 
+       The resulting ball is guaranteed to contain x, but is more economical if x has less than full accuracy.
 =#
 
 trim_bits(x::Mag) = x
