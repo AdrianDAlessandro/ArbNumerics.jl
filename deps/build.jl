@@ -229,6 +229,7 @@ else
   println("DONE")
 
   cd(wdir)
+  end
           
   push!(Libdl.DL_LOAD_PATH, joinpath(prefixpath, "lib"), joinpath(prefixpath, "bin"))        
   
