@@ -14,16 +14,16 @@ const wdir = joinpath(@__DIR__)
 if !issource_build
   # Dependencies that must be installed before this package can be built
   dependencies = [
-    "https://github.com/JuliaMath/GMPBuilder/releases/download/v6.1.2-2/build_GMP.v6.1.2.jl",
-    "https://github.com/JuliaMath/MPFRBuilder/releases/download/v4.0.1-3/build_MPFR.v4.0.1.jl",
-    "https://github.com/thofma/Flint2Builder/releases/download/reentrant2/build_libflint.v0.0.0-5451b53703a529ff76123b7418fe2d624e122db6.jl",
-    "https://github.com/thofma/ArbBuilder/releases/download/56ce68/build_libarb.v0.0.0-56ce687ea1ff9a279dc3c8d20f31a4dd09bae6d1.jl",
+    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/GMP-v6.1.2-1/build_GMP.v6.1.2.jl",
+    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/MPFR-v4.0.2-1/build_MPFR.v4.0.2.jl",
+    "https://github.com/thofma/Flint2Builder/releases/download/ba0cee/build_libflint.v0.0.0-ba0ceed35136a2a43441ab9a9b2e7764e38548ea.jl",
+    "https://github.com/thofma/ArbBuilder/releases/download/6c3738-v2/build_libarb.v0.0.0-6c3738555d00b8b8b24a1f5e0065ef787432513c.jl",
   ]
 
   const prefix = Prefix(get([a for a in ARGS if a != "--verbose"], 1, joinpath(@__DIR__, "usr")))
 
   products = []
-
+  
   for url in dependencies
       build_file = joinpath(@__DIR__, basename(url))
       if !isfile(build_file)
@@ -55,9 +55,9 @@ else
   @show YASM_VERSION = "1.3.0"
   @show MPIR_VERSION = "3.0.0-90740d8fdf03b941b55723b449831c52fd7f51ca"
   @show MPFR_VERSION = "4.0.0"
-  @show FLINT_VERSION = "5451b53703a529ff76123b7418fe2d624e122db6"
-  @show ARB_VERSION = "56ce687ea1ff9a279dc3c8d20f31a4dd09bae6d1"
-
+  @show FLINT_VERSION = "ba0ceed35136a2a43441ab9a9b2e7764e38548ea"
+  @show ARB_VERSION = "6c3738555d00b8b8b24a1f5e0065ef787432513c"
+ 
   if Sys.iswindows()
     error("Source build not available on Windows")
   end
@@ -73,7 +73,7 @@ else
    ENV["CXX"] = "clang++"
   end
 
-  LDFLAGS = "-Wl,-rpath,$prefixpath/lib -Wl,-rpath,\$\$ORIGIN/../share/julia/site/v$(VERSION.major).$(VERSION.minor)/Nemo/local/lib"
+  LDFLAGS = "-Wl,-rpath,$prefixpath/lib -Wl,-rpath,\$\$ORIGIN/../share/julia/site/v$(VERSION.major).$(VERSION.minor)/ArbNumerics/local/lib"
   DLCFLAGS = "-fPIC -fno-common"
 
   cd(wdir)
@@ -97,14 +97,14 @@ else
   cd(wdir)
 
   # install yasm
-
   if !ispath(joinpath(wdir, "yasm-$YASM_VERSION"))
      println("Building yasm ... ")
      YASM_FILE = "yasm-" * YASM_VERSION * ".tar.gz"
-     download("http://www.tortall.net/projects/yasm/releases/$YASM_FILE", YASM_FILE)
+     download("https://github.com/yasm/yasm/archive/v$(YASM_VERSION).tar.gz", YASM_FILE)
      run(`tar -xvf $YASM_FILE`)
      run(`rm $YASM_FILE`)
      cd(joinpath("$wdir","yasm-$YASM_VERSION"))
+     run(`./autogen.sh`)
      run(`./configure`)
      run(`make`)
      println("DONE")
@@ -113,7 +113,6 @@ else
   cd(wdir)
 
   # install GMP/MPIR
-
   MPIR_FILE = "mpir-" * MPIR_VERSION * ".tar.bz2"
 
   if !ispath(joinpath(wdir, "mpir-$MPIR_VERSION"))
@@ -134,16 +133,17 @@ else
   catch
      run(`./configure --with-yasm=$wdir/yasm-$YASM_VERSION/yasm --prefix=$prefixpath M4=$prefixpath/bin/m4 --enable-gmpcompat --disable-static --enable-shared`)
   end
-  run(`make -j4`)
+  run(`make -j$build_threads`)
   run(`make install`)
   cd(wdir)
   run(`rm -rf bin`)
   println("DONE")
-
+ 
   cd(wdir)
 
   # install MPFR
 
+  
   MPFR_FILE = "mpfr-" * MPFR_VERSION * ".tar.bz2"
 
   if !ispath(joinpath(wdir, "mpfr-$MPFR_VERSION"))
@@ -161,7 +161,7 @@ else
   cd("$wdir/mpfr-$MPFR_VERSION")
   withenv("LD_LIBRARY_PATH"=>"$prefixpath/lib", "LDFLAGS"=>LDFLAGS) do
     run(`./configure --prefix=$prefixpath --with-gmp=$prefixpath --disable-static --enable-shared`)
-    run(`make -j4`)
+    run(`make -j$build_threads`)
     run(`make install`)
   end
   println("DONE")
@@ -192,12 +192,12 @@ else
   cd(joinpath("$wdir", "flint2"))
   withenv("LD_LIBRARY_PATH"=>"$prefixpath/lib", "LDFLAGS"=>LDFLAGS) do
     run(`./configure --prefix=$prefixpath --disable-static --enable-shared --with-mpir=$prefixpath --with-mpfr=$prefixpath`)
-    run(`make -j4`)
+    run(`make -j$build_threads`)
     run(`make install`)
   end
 
   println("DONE")
-
+        
   cd(wdir)
 
   # INSTALL ARB
@@ -223,12 +223,12 @@ else
   cd(joinpath("$wdir", "arb"))
   withenv("LD_LIBRARY_PATH"=>"$prefixpath/lib", "LDFLAGS"=>LDFLAGS) do
     run(`./configure --prefix=$prefixpath --disable-static --enable-shared --with-mpir=$prefixpath --with-mpfr=$prefixpath --with-flint=$prefixpath`)
-    run(`make -j4`)
+    run(`make -j$build_threads`)
     run(`make install`)
   end
   println("DONE")
 
   cd(wdir)
-end
-
-push!(Libdl.DL_LOAD_PATH, joinpath(prefixpath, "lib"), joinpath(prefixpath, "bin"))
+          
+  push!(Libdl.DL_LOAD_PATH, joinpath(prefixpath, "lib"), joinpath(prefixpath, "bin"))        
+  
