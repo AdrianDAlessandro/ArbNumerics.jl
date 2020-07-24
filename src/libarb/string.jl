@@ -81,7 +81,7 @@ function arbstring(x::ArbFloat{P}, maxdigits::Int=digit_precision(P); flags::UIn
     return str
 end
 
-function string(x::ArbReal{P}; radius:: Bool=false, midpt::Bool=true) where {P}
+function string(x::ArbReal{P}; radius::Bool=false, midpt::Bool=true) where {P}
     prec = midpt ? digits4bits(P) : digit_precision(P)
     flags = radius ? ARB_STR_RADIUS : ARB_STR_NO_RADIUS
     return arbstring(x, prec, flags=flags)
