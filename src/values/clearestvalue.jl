@@ -71,7 +71,7 @@ function clearest(a::ArbReal{P}) where {P}
     hi = ArbFloat(upperbound(a))
     prec = rounding_precision(lo, hi)
     res = arb_set_round(midpoint(a), prec)
-    return res
+    return ArbReal(res, bits=P)
 end
 
 clearest(a::ArbFloat{P}) where {P} = a
