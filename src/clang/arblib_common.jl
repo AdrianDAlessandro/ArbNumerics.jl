@@ -250,10 +250,6 @@ const acb_poly_t = NTuple{1, acb_poly_struct}
 # Skipping MacroDefinition: arb_radref ( x ) ( & ( x ) -> rad )
 # Skipping MacroDefinition: ARB_IS_LAGOM ( x ) ( ARF_IS_LAGOM ( arb_midref ( x ) ) && MAG_IS_LAGOM ( arb_radref ( x ) ) )
 
-const FMPR_RND_DOWN = 0
-const ARF_RND_DOWN = FMPR_RND_DOWN
-const ARB_RND = ARF_RND_DOWN
-
 # Skipping MacroDefinition: ARB_STR_MORE UWORD ( 1 )
 # Skipping MacroDefinition: ARB_STR_NO_RADIUS UWORD ( 2 )
 # Skipping MacroDefinition: ARB_STR_CONDENSE UWORD ( 16 )
@@ -346,16 +342,26 @@ end
 const arb_poly_t = NTuple{1, arb_poly_struct}
 
 # Skipping MacroDefinition: ARF_INLINE static __inline__
-
 const arf_rnd_t = fmpr_rnd_t
-const FMPR_RND_UP = 1
+
+const FMPR_RND_DOWN = Cint(0)
+const ARF_RND_DOWN = FMPR_RND_DOWN
+const ARB_RND_DOWN = ARF_RND_DOWN
+const FMPR_RND_UP = Cint(1)
 const ARF_RND_UP = FMPR_RND_UP
-const FMPR_RND_FLOOR = 2
+const ARB_RND_UP = ARF_RND_UP
+const FMPR_RND_FLOOR = Cint(2)
 const ARF_RND_FLOOR = FMPR_RND_FLOOR
-const FMPR_RND_CEIL = 3
+const ARB_RND_FLOOR = ARF_RND_FLOOR
+const FMPR_RND_CEIL = Cint(3)
 const ARF_RND_CEIL = FMPR_RND_CEIL
-const FMPR_RND_NEAR = 4
+const ARB_RND_CEIL = ARF_RND_CEIL    
+const FMPR_RND_NEAR = Cint(4)
 const ARF_RND_NEAR = FMPR_RND_NEAR
+const ARB_RND_NEAR = ARF_RND_NEAR
+
+const ARB_RND = ARF_RND_DOWN
+
 const ARF_PREC_EXACT = WORD_MAX
 
 # Skipping MacroDefinition: ARF_PREC_ADD ( prec , extra ) ( ( prec ) == ARF_PREC_EXACT ? ARF_PREC_EXACT : ( prec ) + ( extra ) )
