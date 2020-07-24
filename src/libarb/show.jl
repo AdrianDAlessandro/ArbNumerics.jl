@@ -27,7 +27,7 @@ end
 function show(io::IO, x::ArbFloat{P}) where {P}
     isinf(x) && return showinf(io, x)
     str = string(x)
-    print(io, str)mm
+    print(io, str)
 end
 showall(io::IO, x::ArbFloat{P}) where {P} = print(io, stringall(x))
 
