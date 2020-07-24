@@ -15,6 +15,7 @@ const ARF_RND_NEAR = FMPR_RND_NEAR
 const ARB_RND_NEAR = ARF_RND_NEAR
 
 const ARB_RND = ARF_RND_DOWN
+
 function arb_set_round(x::ArbReal{P}, N::Int) where {P}
     y = ArbReal(0.0,bits=N)
     ccall(ArbNumerics.@libarb(arb_set_round), Cvoid, (Ref{ArbReal}, Ref{ArbReal}, Cint), y, x, N)
@@ -28,32 +29,32 @@ function arf_set_round(x::ArbFloat{P}, N::Int, rounding::Cint) where {P}
 end
 arf_set_round(x::ArbFloat{P}, N::Int) where {P} = arf_set_round(x, N, ARF_RND_NEAR)
 
-function rounding_precision(a::ArbReal{P}) where {P}
+function rounding_precision(lo::ArbFloat{P}, hi::ArbFloat{P}) where {P}
     xtrabits = extrabits()
     W = P + xtrabits
     setextrabits(0)
     setprecision(ArbFloat, W)
-    lo = ArbFloat(midpoint(lowerbound(a)))
-    hi = ArbFloat(midpoint(upperbound(a)))
-    if lo==hi
+    flo = ArbFloat(lo, bits=W)
+    fhi = ArbFloat(hi, bits=W)
+    if flo==fhi
         res = W
     else
         minprec = MINIMUM_PRECISION_BASE2
         maxprec = W-1
         midprec = minprec + ((maxprec-minprec)>>1)
-        arf_set_round(lo, maxprec) == arf_set_round(hi, maxprec) && return maxprec
-        arf_set_round(lo, minprec) != arf_set_round(hi, minprec) && return minprec
+        arf_set_round(flo, maxprec) == arf_set_round(fhi, maxprec) && return maxprec
+        arf_set_round(flo, minprec) != arf_set_round(fhi, minprec) && return missing
         res = 0
-        if arf_set_round(lo, midprec) == arf_set_round(hi, midprec)
+        if arf_set_round(flo, midprec) == arf_set_round(fhi, midprec)
             for p = midprec:maxprec
-                if arf_set_round(lo,p) != arf_set_round(hi,p)
+                if arf_set_round(flo,p) != arf_set_round(fhi,p)
                     res = p - 1
                     break
                 end
             end
         else
             for p = midprec:-1:minprec
-                if arf_set_round(lo,p) == arf_set_round(hi,p)
+                if arf_set_round(flo,p) == arf_set_round(fhi,p)
                     res = p + 1
                     break
                 end
@@ -66,13 +67,17 @@ function rounding_precision(a::ArbReal{P}) where {P}
 end
 
 function clearest(a::ArbReal{P}) where {P}
-    prec = rounding_precision(a)
-    # as ArbFloat(lowerbound(a), bits=prec) == ArbFloat(upperbound(a), bits=prec)
-    #    ArbFloat(midpoint(a), bits=prec) (also) is correct, and conservative
-    x = ArbFloat(midpoint(a), bits=prec)
-    return ArbReal(x)
+    lo = ArbFloat(lowerbound(a))
+    hi = ArbFloat(upperbound(a))
+    prec = rounding_precision(lo, hi)
+    res = arb_set_round(midpoint(a), prec)
+    return setball(res)
 end
+
+clearest(a::ArbFloat{P}) where {P} = a
 
 function clearest(a::ArbComplex{P}) where {P}
     return ArbComplex(roundbest(real(a)), roundbest(imag(a)))
 end
+
+clearest(a::Real) = a
