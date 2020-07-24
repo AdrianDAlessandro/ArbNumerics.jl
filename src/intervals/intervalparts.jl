@@ -88,7 +88,6 @@ function interval(::Type{ArbFloat}, x::ArbReal{P}) where {P}
     return ArbFloat(lowerbound(x), bits=P), ArbFloat(upperbound(x), bits=P)
 end
 
-
 function setball(mid::ArbFloat{P}, rad::ArbFloat{P}) where {P}
     signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
     lbound = mid - rad
@@ -99,6 +98,12 @@ end
 function setball(mid::ArbReal{P}, rad::ArbReal{P}) where {P}
     signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
     setball(ArbFloat(mid, bits=P), ArbFloat(rad, bits=P))
+end
+
+function setball(mid::ArbReal{P}, rad::ArbFloat{Q}) where {P,Q}
+    signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
+    prec = max(P,Q)
+    setball(ArbFloat(mid, bits=prec), ArbFloat(rad, bits=prec))
 end
 
 function setball(mid::Real, rad::Real)
