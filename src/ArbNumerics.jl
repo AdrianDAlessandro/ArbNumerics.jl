@@ -182,7 +182,7 @@ include("values/specialvals.jl")
 include("values/compare.jl")
 include("values/rounding.jl")
 include("values/random.jl")
-include("values/clearestvalue.jl")
+include("values/clearest.jl")
 
 include("float/parametrics.jl")
 include("float/prearith.jl")
