@@ -100,6 +100,12 @@ function setball(mid::ArbReal{P}, rad::ArbReal{P}) where {P}
     setball(ArbFloat(mid, bits=P), ArbFloat(rad, bits=P))
 end
 
+function setball(mid::ArbFloat{P}, rad::ArbFloat{Q}) where {P,Q}
+    signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
+    prec = max(P,Q)
+    setball(ArbFloat(mid, bits=prec), ArbFloat(rad, bits=prec))
+end
+
 function setball(mid::ArbReal{P}, rad::ArbFloat{Q}) where {P,Q}
     signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
     prec = max(P,Q)
