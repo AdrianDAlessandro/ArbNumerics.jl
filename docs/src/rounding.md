@@ -23,3 +23,8 @@ julia> round(ArbReal(pi), RoundToZero), round(ArbFloat(pi), RoundFromZero)
 ```
 
 ```
+
+## To the clearest (least misleading) value
+```
+
+```
