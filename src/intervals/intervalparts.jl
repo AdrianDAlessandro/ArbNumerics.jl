@@ -56,7 +56,7 @@ See also:  [`midpoint`](@ref), [`radius`](@ref), [`setball`](@ref), [`interval`]
 
 
 """
-    setball(midpoint, radius)
+    setball(midpoint, radius=0)
 
 Returns the ball given as _midpoint_ and _radius_.
 
@@ -115,6 +115,9 @@ end
 function setball(mid::Real, rad::Real)
     return setball(ArbFloat(mid), ArbFloat(rad))
 end
+
+setball(mid::ArbReal{P}) where {P} = setball(midpoint(mid), ArbReal(0.0, bits=P))
+setball(mid::ArbFloat{P}) where {P} = setball(mid, ArbFloat(0.0, bits=P))
 
 
 @inline ArbReal{P}(mid::ArbFloat{P}, rad::ArbFloat{P}) where {P} = setball(mid, rad)
@@ -192,8 +195,6 @@ function interval_abs(x::ArbReal{P}) where {P}
     hi = upperbound_abs(x)
     return lo, hi
 end
-
-
 
 function increase_radius(x::ArbReal{P}, err::ArbFloat{P}) where {P}
     err >= 0 || throw(ErrorException("nonnegative err required ($err)"))
