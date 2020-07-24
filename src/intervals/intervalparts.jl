@@ -63,7 +63,7 @@ Returns the ball given as _midpoint_ and _radius_.
 See also:  [`midpoint`](@ref), [`radius`](@ref), [`ball`](@ref), [`interval`](@ref), [`setinterval`](@ref)
 """ setball
 
-
+# void arb_set_interval_arf(arb_t x, const arf_t a, const arf_t b, slong prec)
 function setinterval(lo::ArbFloat{P}, hi::ArbFloat{P}) where {P}
     lo > hi && return setinterval(hi, lo)
     z = ArbReal{P}()
@@ -73,21 +73,21 @@ end
 
 function setinterval(lo::ArbReal{P}, hi::ArbReal{P}) where {P}
     lo > hi && return setinterval(hi, lo)
-    setinterval(lowerbound(lo, ArbFloat), upperbound(hi, ArbFloat))
+    flo = ArbFloat(lowerbound(lo))
+    fhi = ArbFloat(upperbound(hi))
+    return setinterval(flo, fhi)
 end
 
-function setinterval(lo::Real, hi::Real)
-    lo > hi && return setinterval(hi, lo)
-    return setinterval(ArbFloat(lo), ArbFloat(hi))
-end
-
-function interval(x::ArbReal{P}, ::Type{ArbFloat}) where {P}
-    ArbFloat{P}(lowerbound(x)), ArbFloat{P}(upperbound(x))
-end
+setinterval(lo::Real, hi::Real) = setinterval(ArbFloat(lo), ArbFloat(hi))
 
 function interval(x::ArbReal{P}) where {P}
-    lowerbound(x), upperbound(x)
+    return lowerbound(x), upperbound(x)
 end
+
+function interval(::Type{ArbFloat}, x::ArbReal{P}) where {P}
+    return ArbFloat(lowerbound(x), bits=P), ArbFloat(upperbound(x), bits=P)
+end
+
 
 function setball(mid::ArbFloat{P}, rad::ArbFloat{P}) where {P}
     signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
@@ -98,7 +98,7 @@ end
 
 function setball(mid::ArbReal{P}, rad::ArbReal{P}) where {P}
     signbit(rad) && throw(ErrorException("nonnegative radius required ($rad)"))
-    setball(ArbFloat{P}(mid), ArbFloat{P}(rad))
+    setball(ArbFloat(mid, bits=P), ArbFloat(rad, bits=P))
 end
 
 function setball(mid::Real, rad::Real)
