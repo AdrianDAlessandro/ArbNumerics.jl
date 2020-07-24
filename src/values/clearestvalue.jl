@@ -49,7 +49,7 @@ function rounding_precision(a::ArbReal{P}) where {P}
     return max(MINIMUM_PRECISION_BASE2, res)
 end
 
-function roundbest(a::ArbReal{P}) where {P}
+function clearest(a::ArbReal{P}) where {P}
     prec = rounding_precision(a)
     # as ArbFloat(lowerbound(a), bits=prec) == ArbFloat(upperbound(a), bits=prec)
     #    ArbFloat(midpoint(a), bits=prec) (also) is correct, and conservative
@@ -57,6 +57,6 @@ function roundbest(a::ArbReal{P}) where {P}
     return ArbReal(x)
 end
 
-function roundbest(a::ArbComplex{P}) where {P}
+function clearest(a::ArbComplex{P}) where {P}
     return ArbComplex(roundbest(real(a)), roundbest(imag(a)))
 end
