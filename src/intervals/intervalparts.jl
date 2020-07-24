@@ -123,19 +123,17 @@ setball(mid::ArbFloat{P}) where {P} = setball(mid, ArbFloat(0.0, bits=P))
 @inline ArbReal{P}(mid::ArbFloat{P}, rad::ArbFloat{P}) where {P} = setball(mid, rad)
 @inline ArbReal{P}(mid::ArbReal{P}, rad::ArbReal{P}) where {P} = setball(midpoint(mid), midpoint(rad))
 
-
-function ball(x::ArbReal{P}, ::Type{ArbFloat}) where {P}
+@inline function ball(::Type{ArbFloat}, x::ArbReal) where {P}
     ArbFloat{P}(midpoint(x)), ArbFloat{P}(radius(x))
 end
 
-function ball(x::ArbReal{P}) where {P}
+@inline function ball(x::ArbReal{P}) where {P}
     midpoint(x), radius(x)
 end
 
-function ball(x::ArbFloat{P}) where {P}
+@inline function ball(x::ArbFloat{P}) where {P}
     x, zero(typeof(x))
 end
-
 
 @inline function upperbound(x::ArbReal{P}, ::Type{ArbFloat}) where {P}
     w = ArbFloat{P}()
