@@ -31,19 +31,19 @@ function show(io::IO, x::ArbFloat{P}) where {P}
 end
 showall(io::IO, x::ArbFloat{P}) where {P} = print(io, stringall(x))
 
-function show(io::IO, x::ArbReal{P}; radius::Bool=false, midpt::Bool=false) where {P}
+function show(io::IO, x::ArbReal{P}; rad::Bool=false, midpt::Bool=false) where {P}
     isinf(x) && return showinf(io, x)
-    str = string(x, midpt=midpt, radius=radius)
+    str = string(x, midpt=midpt, rad=rad)
     print(io, str)
 end
-showall(io::IO, x::ArbReal{P}; radius::Bool=true, midpt::Bool=true) where {P} = print(io, stringall(x; radius=radius, midpt=midpt))
+showall(io::IO, x::ArbReal{P}; rad::Bool=true, midpt::Bool=true) where {P} = print(io, stringall(x; rad=rad, midpt=midpt))
 
-function show(io::IO, x::ArbComplex{P}; radius::Bool=false, midpt::Bool=false) where {P}
+function show(io::IO, x::ArbComplex{P}; rad::Bool=false, midpt::Bool=false) where {P}
     isinf(x) && return showinf(io, x)
-    str = string(x, radius=radius, midpt=midpt)
+    str = string(x, rad=rad, midpt=midpt)
     print(io, str)
 end
-showall(io::IO, x::ArbComplex{P}; radius::Bool=true, midpt::Bool=true) where {P} = print(io, stringall(x, radius=radius, midpt=midpt))
+showall(io::IO, x::ArbComplex{P}; rad::Bool=true, midpt::Bool=true) where {P} = print(io, stringall(x, rad=rad, midpt=midpt))
 
 function show(x::ArbFloat{P}) where {P}
     str = string(x)
@@ -51,15 +51,14 @@ function show(x::ArbFloat{P}) where {P}
 end
 showall(x::ArbFloat{P}) where {P} = print(Base.stdout, stringall(x))
 
-function show(x::ArbReal{P}; radius::Bool=false, midpt::Bool=false) where {P}
-    str = string(x, radius=radius, midpt=midpt)
+function show(x::ArbReal{P}; rad::Bool=false, midpt::Bool=false) where {P}
+    str = string(x, rad=rad, midpt=midpt)
     print(Base.stdout, str)
 end
-showall(x::ArbReal{P}; radius::Bool=true, midpt::Bool=true) where {P} = print(stdout, stringall(x, radius=radius, midpt=midpt))
+showall(x::ArbReal{P}; rad::Bool=true, midpt::Bool=true) where {P} = print(stdout, stringall(x, rad=rad, midpt=midpt))
 
-function show(x::ArbComplex{P}; radius::Bool=false, midpt::Bool=false) where {P}
-    str = string(x, radius=radius, midpt=midpt)
+function show(x::ArbComplex{P}; rad::Bool=false, midpt::Bool=false) where {P}
+    str = string(x, rad=rad, midpt=midpt)
     print(Base.stdout, str)
 end
-showall(x::ArbComplex{P}; radius::Bool=true, midpt::Bool=true) where {P} = print(stdout, stringall(x, radius=radius, midpt=midpt))
-
+showall(x::ArbComplex{P}; rad::Bool=true, midpt::Bool=true) where {P} = print(stdout, stringall(x, rad=rad, midpt=midpt))
