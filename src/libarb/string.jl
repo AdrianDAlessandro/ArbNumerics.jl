@@ -81,17 +81,17 @@ function arbstring(x::ArbFloat{P}, maxdigits::Int=digit_precision(P); flags::UIn
     return str
 end
 
-function string(x::ArbReal{P}; radius::Bool=false, midpt::Bool=true) where {P}
+function string(x::ArbReal{P}; rad::Bool=false, midpt::Bool=true) where {P}
     prec = midpt ? digits4bits(P) : digit_precision(P)
-    flags = radius ? ARB_STR_RADIUS : ARB_STR_NO_RADIUS
+    flags = rad ? ARB_STR_RADIUS : ARB_STR_NO_RADIUS
     return arbstring(x, prec, flags=flags)
 end
 
-function stringall(x::ArbReal{P}; radius::Bool=false, midpt::Bool=true) where {P}
+function stringall(x::ArbReal{P}; rad::Bool=false, midpt::Bool=true) where {P}
     if midpt
         x = midpoint(x)
     end
-    radius ? arbstring(x, floor(Int,log10(2)*precision(x))+10; flags=ARB_STR_RADIUS) :
+    rad ? arbstring(x, floor(Int,log10(2)*precision(x))+10; flags=ARB_STR_RADIUS) :
              arbstring(x, floor(Int,log10(2)*precision(x))+10; flags=ARB_STR_NO_RADIUS)
 end
 
@@ -104,17 +104,17 @@ function arbstring(x::ArbReal{P}, maxdigits::Int=digit_precision(P); flags::UInt
     return str
 end
 
-function string(x::ArbComplex{P}; radius::Bool=false, midpt=true) where {P}
+function string(x::ArbComplex{P}; rad::Bool=false, midpt=true) where {P}
     prec = midpt ? digits4bits(P) : digit_precision(P)
-    flags = radius ? ARB_STR_RADIUS : ARB_STR_NO_RADIUS
+    flags = rad ? ARB_STR_RADIUS : ARB_STR_NO_RADIUS
     return arbstring(x, prec, flags=flags)
 end
 
-function stringall(x::ArbComplex{P}; radius::Bool=false, midpt::Bool=true) where {P}
+function stringall(x::ArbComplex{P}; rad::Bool=false, midpt::Bool=true) where {P}
     if midpt
         x = midpoint(x)
     end    
-    radius ? arbstring(x, floor(Int,log10(2)*precision(x))+10; flags=ARB_STR_RADIUS) :
+    rad ? arbstring(x, floor(Int,log10(2)*precision(x))+10; flags=ARB_STR_RADIUS) :
              arbstring(x, floor(Int,log10(2)*precision(x))+10; flags=ARB_STR_NO_RADIUS)
 end
 
