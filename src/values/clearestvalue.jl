@@ -80,4 +80,4 @@ function clearest(a::ArbComplex{P}) where {P}
     return ArbComplex(roundbest(real(a)), roundbest(imag(a)))
 end
 
-clearest(a::Real) = a
+clearest(a::AbstractFloat) = a
