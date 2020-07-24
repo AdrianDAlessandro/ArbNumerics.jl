@@ -1,4 +1,20 @@
+const FMPR_RND_DOWN = Cint(0)
+const ARF_RND_DOWN = FMPR_RND_DOWN
+const ARB_RND_DOWN = ARF_RND_DOWN
+const FMPR_RND_UP = Cint(1)
+const ARF_RND_UP = FMPR_RND_UP
+const ARB_RND_UP = ARF_RND_UP
+const FMPR_RND_FLOOR = Cint(2)
+const ARF_RND_FLOOR = FMPR_RND_FLOOR
+const ARB_RND_FLOOR = ARF_RND_FLOOR
+const FMPR_RND_CEIL = Cint(3)
+const ARF_RND_CEIL = FMPR_RND_CEIL
+const ARB_RND_CEIL = ARF_RND_CEIL    
+const FMPR_RND_NEAR = Cint(4)
+const ARF_RND_NEAR = FMPR_RND_NEAR
+const ARB_RND_NEAR = ARF_RND_NEAR
 
+const ARB_RND = ARF_RND_DOWN
 function arb_set_round(x::ArbReal{P}, N::Int) where {P}
     y = ArbReal(0.0,bits=N)
     ccall(ArbNumerics.@libarb(arb_set_round), Cvoid, (Ref{ArbReal}, Ref{ArbReal}, Cint), y, x, N)
