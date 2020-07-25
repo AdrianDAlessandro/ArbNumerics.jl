@@ -67,11 +67,16 @@ function rounding_precision(lo::ArbFloat{P}, hi::ArbFloat{P}) where {P}
 end
 
 function clearest(a::ArbReal{P}) where {P}
+    xtrabits = extrabits()
+    setextrabits(0)
     lo = ArbFloat(lowerbound(a))
     hi = ArbFloat(upperbound(a))
     prec = rounding_precision(lo, hi)
-    return ArbReal(arf_set_round(lo, prec, Cint(4)))
+    res = arf_set_round(lo, prec, Cint(4))
+    setextrabits(xtrabits)
+    return ArbReal(res)
 end
+
 clearest(a::ArbFloat{P}) where {P} = a
 
 function clearest(a::ArbComplex{P}) where {P}
