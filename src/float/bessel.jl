@@ -34,10 +34,10 @@ bessely(nu::S, x::ArbFloat{P}, prec::Int=P) where {P, S<:ST} = ArbFloat(bessely(
 besseli(nu::S, x::ArbFloat{P}, prec::Int=P) where {P, S<:ST} = ArbFloat(besseli(ArbReal{P}(nu), ArbReal{P}(x)), bits=prec)
 besselk(nu::S, x::ArbFloat{P}, prec::Int=P) where {P, S<:ST} = ArbFloat(besselk(ArbReal{P}(nu), ArbReal{P}(x)), bits=prec)
 
-besselj(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = besselj(ArbReal{P}(nu), x, bits=prec)
-bessely(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = bessely(ArbReal{P}(nu), x, bits=prec)
-besseli(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = besseli(ArbReal{P}(nu), x, bits=prec)
-besselk(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = besselk(ArbReal{P}(nu), x, bits=prec)
+besselj(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = ArbReal(besselj(ArbReal(nu, bits=P), x), bits=prec)
+bessely(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = ArbReal(bessely(ArbReal(nu, bits=P), x), bits=prec)
+besseli(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = ArbReal(besseli(ArbReal(nu, bits=P), x), bits=prec)
+besselk(nu::S, x::ArbReal{P}, prec::Int=P) where {P, S<:ST} = ArbReal(besselk(ArbReal(nu, bits=P), x), bits=prec)
 
 besselj0(x::ArbFloat{P}, prec::Int=P) where {P} = besselj(zero(ArbReal{P}), ArbReal{P}(x), bits=prec)
 besselj1(x::ArbFloat{P}, prec::Int=P) where {P} = besselj(one(ArbReal{P}), ArbReal{P}(x), bits=prec)
