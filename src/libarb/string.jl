@@ -112,7 +112,7 @@ function string(x::ArbComplex{P}; rad::Bool=false, midpt=true) where {P}
 end
 
 function stringall(x::ArbComplex{P}; rad::Bool=false, midpt::Bool=true) where {P}
-    if isexact(real(x)) && isexact(imag(x)) && return string(x, rad=rad, midpt=midpt)
+    isexact(real(x)) && isexact(imag(x)) && return string(x, rad=rad, midpt=midpt)
     if midpt
         x = midpoint(x)
     end    
