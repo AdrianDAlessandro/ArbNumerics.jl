@@ -88,7 +88,7 @@ function string(x::ArbReal{P}; rad::Bool=false, midpt::Bool=true) where {P}
 end
 
 function stringall(x::ArbReal{P}; rad::Bool=false, midpt::Bool=true) where {P}
-    if isexact(x) && return string(x, rad=rad, midpt=midpt)
+    isexact(x) && return string(x, rad=rad, midpt=midpt)
     if midpt
         x = midpoint(x)
     end
