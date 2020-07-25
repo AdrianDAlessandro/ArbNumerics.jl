@@ -182,8 +182,9 @@ ArbFloat(x::ArbReal{P}) where {P} = ArbFloat{P}(x)
 ArbFloat(x::ArbComplex{P}) where {P} = ArbFloat{P}(real(x))
 ArbReal(x::ArbFloat{P}) where {P} = ArbReal{P}(x)
 ArbReal(x::ArbComplex{P}) where {P} = ArbReal{P}(real(x))
-ArbComplex(x::ArbFloat{P}) where {P} = ArbComplex(ArbReal(x), ArbReal(0.0, bits=P))
-ArbComplex(x::ArbReal{P}) where {P} = ArbComplex(x, ArbReal(0.0, bits=P))
+# these two signatures appear in /src/libarb/ArbComplex.jl 173, 174
+# ArbComplex(x::ArbFloat{P}) where {P} = ArbComplex(ArbReal(x), ArbReal(0.0, bits=P))
+# ArbComplex(x::ArbReal{P}) where {P} = ArbComplex(x, ArbReal(0.0, bits=P))
 
 ArbFloat{Q}(x::ArbReal{P}) where {P,Q} = ArbFloat(ArbReal(x, bits=Q))
 ArbFloat{Q}(x::ArbComplex{P}) where {P,Q} = ArbFloat(ArbReal(real(x), bits=Q))
