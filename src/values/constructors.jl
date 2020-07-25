@@ -188,7 +188,7 @@ ArbComplex(x::ArbReal{P}) where {P} = ArbComplex(x, ArbReal(0.0, bits=P))
 ArbFloat{Q}(x::ArbReal{P}) where {P,Q} = ArbFloat(ArbReal(x, bits=Q))
 ArbFloat{Q}(x::ArbComplex{P}) where {P,Q} = ArbFloat(ArbReal(real(x), bits=Q))
 ArbReal{Q}(x::ArbFloat{P}) where {P,Q} = ArbReal(ArbFloat(x, bits=Q))
-ArbReal{Q}(x::ArbComplex{P}) where {P,Q} = ArbReal(real(x), bits=Q))
+ArbReal{Q}(x::ArbComplex{P}) where {P,Q} = ArbReal(real(x), bits=Q)
 ArbComplex{Q}(x::ArbFloat{P}) where {P,Q} = ArbComplex{Q}(ArbReal(ArbFloat(x, bits=Q)))
 ArbComplex{Q}(x::ArbReal{P}) where {P,Q} = ArbComplex{Q}(ArbReal(x, bits=Q))
 
