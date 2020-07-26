@@ -16,6 +16,10 @@
   "build_Antic.v0.1.0.jl",
    ]
 
+  println("dependencies")
+  println.(dependencies)
+  println("")
+            
   for file in dependencies
        build_file = joinpath(@__DIR__, file)
        m = @eval module $(gensym()); include($build_file); end
@@ -24,7 +28,16 @@
        end
   end
 
+  println("products")
+  println.(products)
+  println("")
+
   # Finally, write out a deps.jl file
   write_deps_file(joinpath(@__DIR__, "deps.jl"), Array{Product,1}(products), verbose=verbose)
 
+  depsfile = joinpath(@__DIR__, "deps.jl")
+  println("depsfile")
+  println(depsfile)
+  println("")
+          
 end # VERSION
