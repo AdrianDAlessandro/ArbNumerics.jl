@@ -312,7 +312,17 @@ This work develops parts the Arb C library within Julia.  It is entirely depende
 For a numeric types like `Float64` and `ComplexF64` with about twice their precision, [Quadmath.jl](https://github.com/JuliaMath/Quadmath.jl) exports `Float128` and `ComplexF128`.  For almost as much precision with better performance, [DoubleFloats.jl](https://github.com/JuliaMath/DoubleFloats.jl) exports `Double64` and `ComplexDF64`. ValidatedNumerics.jl and other packages available at [JuliaIntervals](https://github.com/JuliaIntervals) provide an alternative approach to developing correctly contained results.  Those packages are very good and worthwhile when you do not require multiprecision numerics.
 
 ----
-## notes
 
-- To propose internal changes, please use pull requests.
-- To discuss improvements, please raise a GitHub issue.
+### required libraries
+
+dependency | library | requires
+-----------|---------|----------
+GMP | Multiple Precision Arithmetic | standalone
+MPFR | Multiprecision Floating-Point Reliable | GMP
+FLINT | Fast Library for Number Theory | (GMP, MPFR)
+ARB | Arbitrary Precision Ball Arithmetic | (GMP, MPFR, FLINT)
+
+- MPFR (requires GMP)
+- FLINT (requires MPFR, GMP)
+- ARB-(requires GMP, MPFR, FLINT)
+
