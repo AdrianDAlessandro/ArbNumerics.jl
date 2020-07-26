@@ -28,7 +28,6 @@ test = ["Test"]
 
 [compat]
 SpecialFunctions = "0"
-BinaryProvider = "0"
 GenericSVD = "0"
 GenericSchur = "0"
 Readables = "0"
