@@ -313,9 +313,9 @@ For a numeric types like `Float64` and `ComplexF64` with about twice their preci
 
 ----
 
-### dependencies
+### external dependencies
 
-           | library | requires
+ name      | library | requires
 -----------|---------|----------
 GMP | Multiple Precision Arithmetic | standalone
 MPFR | Multiprecision Floating-Point Reliable | GMP
