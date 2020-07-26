@@ -319,10 +319,6 @@ dependency | library | requires
 -----------|---------|----------
 GMP | Multiple Precision Arithmetic | standalone
 MPFR | Multiprecision Floating-Point Reliable | GMP
-FLINT | Fast Library for Number Theory | (GMP, MPFR)
-ARB | Arbitrary Precision Ball Arithmetic | (GMP, MPFR, FLINT)
-
-- MPFR (requires GMP)
-- FLINT (requires MPFR, GMP)
-- ARB-(requires GMP, MPFR, FLINT)
+FLINT | Fast Library for Number Theory | GMP, MPFR
+ARB | Arbitrary Precision Ball Arithmetic | GMP, MPFR, FLINT
 
