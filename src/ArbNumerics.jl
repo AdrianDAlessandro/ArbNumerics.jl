@@ -141,7 +141,10 @@ export tr, det, transpose, transpose!, norm, mul!, lmul!, rmul!, lu, ldlt,
 
 import Base.MathConstants: π, ℯ, γ, φ, catalan
 
+using Pkg
 using Libdl
+using LoadFlint
+
 using Random
 using Random: SamplerType, SamplerTrivial, CloseOpen01
 
