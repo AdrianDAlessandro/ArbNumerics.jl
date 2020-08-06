@@ -1,3 +1,4 @@
+#=
 using Libdl
  
 iswindows64() = (Sys.iswindows() ? true : false) && (Int == Int64)
@@ -79,6 +80,7 @@ else
     throw(ErrorException("Compiled library files were not found"))
   end
 end
+=#
 
 #=
 if Sys.iswindows()
@@ -100,11 +102,11 @@ end
 =#
 
 macro libarb(libraryfunction)
-    (:($libraryfunction), LibArb)
+    :(dlsym(libarb, $libraryfunction))
 end
 
 macro libflint(libraryfunction)
-    (:($libraryfunction), LibFlint)
+    :(dlsym(libflint, $libraryfunction))
 end
 
 #=
