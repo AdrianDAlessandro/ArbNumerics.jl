@@ -1,5 +1,5 @@
-for (TT,init_f,clear_f) in [(:ArbReal,@libarb(:_arb_vec_init),@libarb(:_arb_vec_clear)),
-                            (:ArbComplex,@libarb(:_acb_vec_init),@libarb(:_acb_vec_clear))]
+for (TT,init_f,clear_f) in [(:ArbReal,@libarb(_arb_vec_init),@libarb(_arb_vec_clear)),
+                            (:ArbComplex,@libarb(_acb_vec_init),@libarb(_acb_vec_clear))]
     @eval begin
         init(::Type{T}, len::Integer) where {T<:$TT} =
             ccall($init_f, Ptr{T}, (Int32,), len)
