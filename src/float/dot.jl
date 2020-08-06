@@ -1,4 +1,4 @@
-for (TT,dot_f) in [(:ArbReal, @libarb(arb_dot)),(:ArbComplex, @libarb(acb_dot))]
+for (TT,dot_f) in [(:ArbReal, @libarb(arb_dot)),(:ArbComplex, @libarb(:acb_dot))]
     @eval begin
         function LinearAlgebra.dot(x::ArblibVector{T}, y::ArblibVector{T}) where {T<:$TT}
             @assert x.len == y.len
