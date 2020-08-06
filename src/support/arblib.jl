@@ -8,7 +8,7 @@ end
 macro libmpfr(libfn)
     (dlsym(libmpfr, :($libfn)))
 end
-macro libarb(libgmp)
+macro libgmp(libfn)
     (dlsym(libgmp, :($libfn)))
 end
 
