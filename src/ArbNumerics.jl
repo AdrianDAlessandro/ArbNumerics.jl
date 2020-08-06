@@ -143,6 +143,7 @@ using Libdl
 using Random
 using Random: SamplerType, SamplerTrivial, CloseOpen01
 
+#=
 using LoadFlint
 using FLINT_jll
 using Arb_jll
@@ -150,8 +151,18 @@ using Arb_jll
 const libgmp = LoadFlint.libgmp
 const libmpfr = LoadFlint.libmpfr
 const libflint = LoadFlint.libflint
+const libarb = Arb_jll.libarb
+=#
 
-#const libarb = LoadFlint.libarb
+import GMP_jll
+import MPFR_jll
+import FLINT_jll
+import Arb_jll
+const libgmp = dlopen(GMP_jll.libgmp)
+const lib_mpfr = dlopen(MPFR_jll.libmpfr)
+const lib_flint = dlopen(FLINT_jll.libflint)
+const lib_arb = dlopen(Arb_jll.libarb)
+
 
 include("support/arblib.jl")
 include("support/abstractions.jl")
