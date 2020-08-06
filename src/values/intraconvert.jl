@@ -62,31 +62,32 @@ convert(::Type{Tuple{ArbFloat{P}, ArbFloat{P}}}, x::ArbComplex{P}) where {P} = (
 
 function Mag(x::ArbFloat{P}, ::Type{UpperBound}) where {P}
     z = ArbFloat{P}()
-    ccall(@libarb(arf_get_ubound_mag), Cvoid,
+    ccall(@libarb(arf_get_mag), Cvoid,
           (Ref{ArbFloat}, Ref{Mag}), z, x)
     return z
 end
 
 function Mag(x::ArbFloat{P}, ::Type{LowerBound}) where {P}
     z = ArbFloat{P}()
-    ccall(@libarb(arf_get_lbound_mag), Cvoid,
+    ccall(@libarb(arf_get_mag_lower), Cvoid,
           (Ref{ArbFloat}, Ref{Mag}), z, x)
     return z
 end
 
 ArbFloat{P}(x::ArbReal{P}) where {P} = ArbFloat{P}(midpoint(x), UpperBound)
 
+#=
 function ArbFloat{P}(x::ArbReal{P}, ::Type{UpperBound}) where {P}
     z = ArbFloat{P}()
-    ccall(@libarb(arb_get_ubound_arf), Cvoid,
-          (Ref{ArbFloat}, Ref{ArbReal}, Clong), z, x, P)
+    ccall(@libarb(arb_get_mag), Cvoid,
+          (Ref{ArbFloat}, Ref{Mag}, Clong), z, x, P)
     return z
 end
 convert(::Type{ArbFloat{P}}, x::ArbReal{P}, ::Type{UpperBound}) where {P} = ArbFloat{P}(x)
 
 function ArbFloat{P}(x::ArbReal{P}, ::Type{LowerBound}) where {P}
     z = ArbFloat{P}()
-    ccall(@libarb(arb_get_lbound_arf), Cvoid,
+    ccall(@libarb(arb_get_mag_lower), Cvoid,
           (Ref{ArbFloat}, Ref{ArbReal}, Clong), z, x, P)
     return z
 end
@@ -140,3 +141,4 @@ function Mag(x::ArbComplex{P}, ::Type{LowerBound}) where {P}
           (Ref{Mag}, Ref{ArbReal}, Clong), z, x, P)
     return z
 end
+=#
