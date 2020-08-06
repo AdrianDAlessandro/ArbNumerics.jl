@@ -79,8 +79,10 @@ function indeterminate!(x::ArbReal{P}) where {P}
 end
 
 function nan!(x::ArbReal{P}) where {P}
-    ccall(@libarb(arb_nan), Cvoid, (Ref{ArbReal},), x)
-    return x
+    w = ArbFloat{P}()
+    ccall(@libarb(arf_nan), Cvoid, (Ref{ArbFloat},), w)
+    ccall(@libarb(arb_set_arf), Cvoid, (Ref{ArbReal}, Ref{ArbFloat}), x, w)
+    return w
 end
 
 
