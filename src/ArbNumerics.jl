@@ -144,7 +144,7 @@ using Random
 using Random: SamplerType, SamplerTrivial, CloseOpen01
 
 using LoadFlint
-using Flint_jll
+using FLINT_jll
 using Arb_jll
 
 const libgmp = LoadFlint.libgmp
