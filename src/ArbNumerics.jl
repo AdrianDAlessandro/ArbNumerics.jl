@@ -154,15 +154,10 @@ const libflint = LoadFlint.libflint
 const libarb = Arb_jll.libarb
 =#
 
-import GMP_jll
-import MPFR_jll
-import FLINT_jll
-import Arb_jll
-const libgmp = dlopen(GMP_jll.libgmp)
-const lib_mpfr = dlopen(MPFR_jll.libmpfr)
-const lib_flint = dlopen(FLINT_jll.libflint)
-const lib_arb = dlopen(Arb_jll.libarb)
-
+import GMP_jll  ;  const libgmp   = dlopen(GMP_jll.libgmp) 
+import MPFR_jll ;  const libmpfr  = dlopen(MPFR_jll.libmpfr)
+import FLINT_jll;  const libflint = dlopen(FLINT_jll.libflint)
+import Arb_jll  ;  const libarb   = dlopen(Arb_jll.libarb)
 
 include("support/arblib.jl")
 include("support/abstractions.jl")
